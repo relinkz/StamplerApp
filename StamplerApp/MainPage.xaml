@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StamplerApp.MainPage">
+
+	<ScrollView>
+		<VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+			<Image
+                Source="dotnet_bot.png"
+                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                HeightRequest="200"
+                HorizontalOptions="Center" />
+
+			<Label
+                Text="The Stampler App"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+			<Label
+							  x:Name="ElapsedTime"
+                Text="Time Worked: "
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="What is this shit?"
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+			<Button
+                x:Name="TimerBtn"
+                Text="Start Day"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounterClicked"
+                HorizontalOptions="Center" />
+
+			<Label
+							  x:Name="TimeStart"
+                Text="Start: "
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="What is this shit?"
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+			<Label
+							  x:Name="TimeEnd"
+                Text="End: "
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="What is this shit?"
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+		</VerticalStackLayout>
+	</ScrollView>
+
+</ContentPage>
