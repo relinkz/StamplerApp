@@ -3,9 +3,13 @@ namespace MemoryManagement
 {
 	public class DateSaver
 	{
-		async Task SaveDate(CancellationToken tkn, DateEntry entry)
+		public bool DoStuff()
 		{
-
+			return true;
 		}
+		//async Task SaveDate(CancellationToken tkn, DateEntry entry)
+		//{
+		//	return;
+		//}
 	}
 }
