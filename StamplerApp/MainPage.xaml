@@ -51,8 +51,13 @@
                 SemanticProperties.Description="What is this shit?"
                 FontSize="18"
                 HorizontalOptions="Center" />
-
+			<Button
+		            x:Name = "hi"
+		            Text = "Show entries"
+				        MaximumWidthRequest="200"
+				        MinimumHeightRequest="200"
+		            VerticalOptions="End" />
 		</VerticalStackLayout>
 	</ScrollView>
-
+	
 </ContentPage>
