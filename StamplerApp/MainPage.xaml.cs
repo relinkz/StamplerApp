@@ -1,6 +1,5 @@
 ﻿
 using System.Diagnostics;
-using CommunityToolkit.Maui.Storage;
 using MemoryManagement;
 
 namespace StamplerApp
@@ -14,13 +13,21 @@ namespace StamplerApp
 		private List<DateEntry> m_entries;
 		private DateSaver m_saver;
 
-		public MainPage(IFileSaver fileSaver)
+		public MainPage()
 		{
 			InitializeComponent();
 			m_entries = new List<DateEntry>();
-			m_saver = new DateSaver(fileSaver);
+			m_saver = new DateSaver();
 		}
 
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
+
+			DateEntry test = new DateEntry("2023-11-07;08:00.00;16:30.00;6 0;Notes here;normal.png");
+			m_saver.AppendOnFile(test);
+			listView.ItemsSource = m_saver.ReadFromFile();
+		}
 		private void OnCounterClicked(object sender, EventArgs e)
 		{
 			if (m_timerStarted == false)
@@ -63,53 +70,20 @@ namespace StamplerApp
 
 		private async void OnLoadClicked(object sender, EventArgs e)
 		{
-			ReadFromFile();
+			listView.ItemsSource = m_saver.ReadFromFile();
 		}
 
 		private async void DisplayWorkedTime()
 		{
-			while(m_timerEnded == false)
+			while (m_timerEnded == false)
 			{
 				if (m_timerStarted)
 				{
 					var time = DateTime.Now - m_start;
-					ElapsedTime.Text = $"Time: { time.Hours }::{time.Minutes}::{time.Seconds}";
+					ElapsedTime.Text = $"Time: {time.Hours}::{time.Minutes}::{time.Seconds}";
 				}
 
 				await (Task.Delay(500));
-			}
-		}
-		public async void ReadFromFile()
-		{
-			try
-			{
-				var result = await FilePicker.Default.PickAsync();
-
-				if (result.FileName != "StamplerAppData.txt")
-				{
-					Debug.Assert(false, "File must have exact name");
-				}
-
-				using var stream = await result.OpenReadAsync();
-				using StreamReader reader = new StreamReader(stream);
-
-				bool done = false;
-				while (!done)
-				{
-					var task = await reader.ReadLineAsync();
-					if (task == null)
-					{
-						done = true;
-						continue;
-					}
-					var entry = new DateEntry(task);
-					m_entries.Add(entry);
-				}
-
-				listView.ItemsSource = m_entries;
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

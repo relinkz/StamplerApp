@@ -1,32 +1,72 @@
 ﻿
-using CommunityToolkit.Maui.Storage;
-using System.Text;
+using System.Diagnostics;
 
 namespace MemoryManagement
 {
 	public class DateSaver
 	{
-		IFileSaver m_fileSaver;
-		CancellationTokenSource m_cancellationTokenSource;
-		private readonly string m_filename = "StamplerAppData.txt";
+		private readonly string m_filePath;
+		private readonly string m_filename;
 
-		public DateSaver(IFileSaver fileSaver)
+		public DateSaver()
 		{
-			m_fileSaver = fileSaver;
-			m_cancellationTokenSource = new CancellationTokenSource();
+			m_filename = "StamplerAppData2.txt";
+			string localFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+			m_filePath = Path.Combine(localFolderPath, m_filename);
 		}
 
-		async public void SaveEntryByWaiting(DateEntry dateEntry)
+		public List<DateEntry> ReadFromFile()
 		{
-			var toEncode = dateEntry.AsBundledString();
+			CreateFileIfNeeded();
 
-			var encodedData = Encoding.Default.GetBytes(toEncode);
-			using var stream = new MemoryStream(encodedData);
-
-			var task = await m_fileSaver.SaveAsync(m_filename, stream, m_cancellationTokenSource.Token);
-			if (!task.IsSuccessful) 
+			List<DateEntry> dates = new List<DateEntry>();
+			try
 			{
-				throw new Exception(task.Exception.ToString());
+				using (StreamReader reader = new StreamReader(m_filePath))
+				{
+					string line;
+					while ((line = reader.ReadLine()) != null)
+					{
+						var dateEntry = new DateEntry(line);
+						dates.Add(dateEntry);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Debug.Assert(false, e.Message);
+				throw;
+			}
+
+			return dates;
+		}
+
+		private void CreateFileIfNeeded()
+		{
+			if (!File.Exists(m_filePath))
+			{
+				try
+				{
+					File.Create(m_filePath).Close();
+				}
+				catch (Exception ex)
+				{
+					Debug.Assert(false, ex.Message);
+					throw;
+				}
+			}
+		}
+
+		public void AppendOnFile(DateEntry date)
+		{
+			try
+			{
+				File.AppendAllText(m_filePath, date.AsBundledString() + "\n");
+			}
+			catch (Exception e )
+			{
+				Debug.Assert(false, e.Message);
+				throw;
 			}
 		}
 	}
