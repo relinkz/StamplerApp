@@ -1,6 +1,5 @@
 ﻿
 using CommunityToolkit.Maui.Storage;
-using System.Diagnostics;
 using System.Text;
 
 namespace MemoryManagement
@@ -19,8 +18,9 @@ namespace MemoryManagement
 
 		async public void SaveEntryByWaiting(DateEntry dateEntry)
 		{
-			var toStore = dateEntry.ToString();
-			var encodedData = Encoding.Default.GetBytes(toStore);
+			var toEncode = dateEntry.AsBundledString();
+
+			var encodedData = Encoding.Default.GetBytes(toEncode);
 			using var stream = new MemoryStream(encodedData);
 
 			var task = await m_fileSaver.SaveAsync(m_filename, stream, m_cancellationTokenSource.Token);

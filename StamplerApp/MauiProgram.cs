@@ -19,7 +19,6 @@ namespace StamplerApp
 				});
 
 			builder.Services.AddSingleton<IFileSaver>(FileSaver.Default);
-			builder.Services.AddTransient<MemoryManagement.DateSaver>();
 			builder.Services.AddTransient<MainPage>();
 #if DEBUG
 			builder.Logging.AddDebug();

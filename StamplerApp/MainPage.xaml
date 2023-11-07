@@ -2,23 +2,80 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="StamplerApp.MainPage">
-
 	<ScrollView>
 		<VerticalStackLayout
             Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">
 
-			<Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
+			<ListView x:Name="listView">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<Grid Padding="10">
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="120" />
+									<ColumnDefinition Width="140" />
+									<ColumnDefinition Width="140" />
+								</Grid.ColumnDefinitions>
+								<Image Grid.RowSpan="2"
+												 Source="{Binding ImageUrl}"
+												 Aspect="AspectFill"
+												 HeightRequest="60"
+												 WidthRequest="60" />
+								<Label Grid.Column="1"
+											 Text="{Binding Date}" 
+											 FontAttributes="Bold" 
+											 FontSize="14" />
+
+								<Label Grid.Column="1"
+											 Grid.Row="1"
+											 Text="{Binding TimeWorked}"
+											 FontAttributes="Bold"
+											 FontSize="14"/>
+
+								<Label Grid.Column="2"
+											 Text="{Binding ShiftStart}"
+											 FontAttributes="Italic"
+											 FontSize="14" />
+
+								<Label Grid.Column="2"
+											 Grid.Row="1"
+											 Text="{Binding ShiftEnd}"
+											 FontAttributes="Italic"
+											 FontSize="14" />
+
+								<Label Grid.Column="3"
+											 Text="{Binding PersonalNotes}"
+											 FontAttributes="Italic"
+											 FontSize="14" />
+							</Grid>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+
+			<Label
+							  x:Name="TimeStart"
+                Text="Start: "
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="What is this shit?"
+                FontSize="24"
                 HorizontalOptions="Center" />
 
 			<Label
-                Text="The Stampler App"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
+							  x:Name="TimeEnd"
+                Text="End: "
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="What is this shit?"
+                FontSize="24"
                 HorizontalOptions="Center" />
 
 			<Label
@@ -29,34 +86,37 @@
                 FontSize="18"
                 HorizontalOptions="Center" />
 
+			<ImageButton 
+				x:Name= "TimerBtn"
+				Source="Play.png"
+        Clicked="OnCounterClicked"
+				MaximumHeightRequest="200"
+				MaximumWidthRequest="200"
+				HorizontalOptions="Center" />
+
 			<Button
-                x:Name="TimerBtn"
-                Text="Start Day"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
+				x:Name="LoadBtn" 
+				Text="Read file"
+				Clicked="OnLoadClicked"
+				MaximumHeightRequest="200"
+				MaximumWidthRequest="200"
+				HorizontalOptions="Center"/>
 
 			<Label
-							  x:Name="TimeStart"
-                Text="Start: "
+							  x:Name="LatestEntry"
+                Text=""
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="What is this shit?"
                 FontSize="18"
                 HorizontalOptions="Center" />
 
 			<Label
-							  x:Name="TimeEnd"
-                Text="End: "
+							  x:Name="DebugEntry"
+                Text=""
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="What is this shit?"
                 FontSize="18"
                 HorizontalOptions="Center" />
-			<Button
-		            x:Name = "hi"
-		            Text = "Show entries"
-				        MaximumWidthRequest="200"
-				        MinimumHeightRequest="200"
-		            VerticalOptions="End" />
 		</VerticalStackLayout>
 	</ScrollView>
 	
