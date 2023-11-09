@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace MemoryManagement
+namespace StamplerApp.MemoryManagement
 {
 	public class DateEntry : IEquatable<DateEntry>, IComparable<DateEntry>
 	{
@@ -13,8 +13,9 @@ namespace MemoryManagement
 
 		private readonly DateTime m_start;
 		private readonly DateTime m_end;
-		private readonly string[] m_readFormats;
-		private readonly string[] m_displayFormats;
+		
+		static private readonly string[] m_readFormats = new string[] { "yyyyMMdd", "HHmmss", "yyyyMMddHHmmss" };
+		static private readonly string[] m_displayFormats = new string[] { "yyyy-MM-dd", "HH:mm:ss", "yyyy-MM-dd HH:mm:ss" };
 
 		private DateTime TryConvertStringToDateTime(string date)
 		{
@@ -30,9 +31,6 @@ namespace MemoryManagement
 		}
 		public DateEntry(string timestrStart, string timestrEnd)
 		{
-			m_readFormats = new string[] { "yyyyMMdd", "HHmmss", "yyyyMMddHHmmss" };
-			m_displayFormats = new string[] { "yyyy-MM-dd", "HH:mm:ss", "yyyy-MM-dd HH:mm:ss" };
-
 			try
 			{
 				m_start = TryConvertStringToDateTime(timestrStart);
@@ -58,7 +56,7 @@ namespace MemoryManagement
 			m_end = end;
 		}
 
-		public int CompareTo(DateEntry? other)
+		public int CompareTo(DateEntry other)
 		{
 			if (other == null)
 			{
@@ -70,7 +68,7 @@ namespace MemoryManagement
 			}
 		}
 
-		public bool Equals(DateEntry? other)
+		public bool Equals(DateEntry other)
 		{
 			if (other == null)
 			{
@@ -83,19 +81,26 @@ namespace MemoryManagement
 			return false;
 		}
 
+		public string ToFileExport()
+		{
+			var stringStart = m_start.ToString(m_readFormats[(int)FormatType.Both]);
+			var stringEnd = m_end.ToString(m_readFormats[(int)FormatType.Both]);
+
+			return stringStart + " " + stringEnd; 
+		}
 
 		public string ShiftStart
 		{
 			get
 			{
-				return m_start.ToString(m_displayFormats[(int)FormatType.Time]);
+				return "start: " + m_start.ToString(m_displayFormats[(int)FormatType.Time]);
 			}
 		}
 		public string ShiftEnd
 		{
 			get
 			{
-				return m_end.ToString(m_displayFormats[(int)FormatType.Time]);
+				return "end: " + m_end.ToString(m_displayFormats[(int)FormatType.Time]);
 			}
 		}
 		public string Date
@@ -110,7 +115,7 @@ namespace MemoryManagement
 			get
 			{
 				var span = m_end - m_start;
-				return span.ToString("c");
+				return $"Worked : {span.Hours}:{span.Minutes}";
 			}
 		}
 		public string PersonalNotes { get; set; }

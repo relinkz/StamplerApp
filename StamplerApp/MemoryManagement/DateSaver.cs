@@ -1,7 +1,7 @@
 ﻿
 using System.Diagnostics;
 
-namespace MemoryManagement
+namespace StamplerApp.MemoryManagement
 {
 	public class DateSaver
 	{

@@ -1,5 +1,5 @@
 ﻿
-using MemoryManagement;
+using StamplerApp.MemoryManagement;
 
 namespace StamplerApp
 {
@@ -9,24 +9,27 @@ namespace StamplerApp
 		private DateTime m_end;
 		private bool m_timerStarted;
 		private bool m_timerEnded;
-		private List<DateEntry> m_entries;
-		private DateSaver m_saver;
-
+		private DateHandler m_handler;
+		private readonly int m_peekCount;
 		public MainPage()
 		{
 			InitializeComponent();
-			m_entries = new List<DateEntry>();
-			m_saver = new DateSaver();
+			m_peekCount = 10;
+
+			m_handler = new DateHandler();
 		}
 
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
 
-			m_entries = m_saver.ReadFromFile();
-			m_entries.Reverse();
+			listView.ItemsSource = m_handler.PeekNrOfEntries(m_peekCount);
+		}
 
-			listView.ItemsSource = m_entries;
+		protected override void OnDisappearing()
+		{
+			m_handler.SortLatestDateFirst();
+			m_handler.WriteToFile();
 		}
 		private void OnCounterClicked(object sender, EventArgs e)
 		{
@@ -53,18 +56,14 @@ namespace StamplerApp
 
 				var time = DateTime.Now - m_start;
 
-				DateEntry entry = new DateEntry(m_start, m_end);
-
-				ElapsedTime.Text = $"Worked hours: {time.Hours}::{time.Minutes}::{time.Seconds}";
-				string date = m_start.Date + " H:" + time.Hours.ToString() + " Min:" + time.Minutes.ToString();
+				ElapsedTime.Text = $"Worked hours: {time.Hours}:{time.Minutes}";
 				
-				m_entries.Add(entry);
+				m_handler.AddEntry(m_start, m_end);
+				m_handler.SortLatestDateFirst();
+				m_handler.WriteToFile();
+				
+				listView.ItemsSource = m_handler.PeekNrOfEntries(m_peekCount);
 			}
-		}
-
-		private async void OnLoadClicked(object sender, EventArgs e)
-		{
-			listView.ItemsSource = m_saver.ReadFromFile();
 		}
 
 		private async void DisplayWorkedTime()
@@ -74,10 +73,20 @@ namespace StamplerApp
 				if (m_timerStarted)
 				{
 					var time = DateTime.Now - m_start;
-					ElapsedTime.Text = $"Time: {time.Hours}::{time.Minutes}::{time.Seconds}";
+					ElapsedTime.Text = $"Worked hours: {time.Hours}:{time.Minutes}";
 				}
 
 				await (Task.Delay(500));
+			}
+		}
+		private async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+		{
+			bool answer = await DisplayAlert("Remove Item?", "Would you like to remove this entry?", "Yes", "No");
+			if (answer)
+			{
+				m_handler.RemoveEntryAt(args.SelectedItemIndex);
+				m_handler.SortLatestDateFirst();
+				listView.ItemsSource = m_handler.PeekNrOfEntries(m_peekCount);
 			}
 		}
 	}

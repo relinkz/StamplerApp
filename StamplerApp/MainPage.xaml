@@ -5,7 +5,7 @@
 	<ScrollView>
 		<Grid>
 			<Grid.RowDefinitions>
-				<RowDefinition Height="4*"/>
+				<RowDefinition Height="5*"/>
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="*"/>
@@ -19,26 +19,29 @@
 			</Grid.ColumnDefinitions>-->
 
 			<!--list shit-->
-			<ListView x:Name="listView" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" MaximumHeightRequest="500">
+			<ListView x:Name="listView" 
+								ItemSelected="OnItemSelected"
+								Grid.Row="0" 
+								Grid.Column="0" 
+								Grid.ColumnSpan="3" 
+								MaximumHeightRequest="500">
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
-							<Grid Padding="10">
+							<Grid>
 								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
+									<RowDefinition Height="*" />
+									<RowDefinition Height="*" />
 								</Grid.RowDefinitions>
 								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="120" />
-									<ColumnDefinition Width="140" />
-									<ColumnDefinition Width="140" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
 								</Grid.ColumnDefinitions>
 								<Image Grid.RowSpan="2"
 												 Source="{Binding ImageUrl}"
-												 Aspect="AspectFill"
+												 Aspect="AspectFit"
+												 HorizontalOptions="Start"
 												 HeightRequest="60"
 												 WidthRequest="60" />
 								<Label Grid.Column="1"
