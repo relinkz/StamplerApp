@@ -3,12 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="StamplerApp.MainPage">
 	<ScrollView>
-		<VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="4*"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
 
-			<ListView x:Name="listView">
+			</Grid.RowDefinitions>
+			<!--<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>-->
+
+			<!--list shit-->
+			<ListView x:Name="listView" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" MaximumHeightRequest="500">
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
@@ -62,62 +73,43 @@
 				</ListView.ItemTemplate>
 			</ListView>
 
-			<Label
+				<!--Buttons and shit-->
+				<Label
+								Grid.Row="1"
 							  x:Name="TimeStart"
                 Text="Start: "
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="What is this shit?"
-                FontSize="24"
+                FontSize="18"
                 HorizontalOptions="Center" />
 
 			<Label
+								Grid.Row="2"
 							  x:Name="TimeEnd"
                 Text="End: "
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="What is this shit?"
-                FontSize="24"
+                FontSize="18"
                 HorizontalOptions="Center" />
 
 			<Label
+								Grid.Row="3"
 							  x:Name="ElapsedTime"
                 Text="Time Worked: "
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="What is this shit?"
-                FontSize="18"
+                FontSize="24"
                 HorizontalOptions="Center" />
 
 			<ImageButton 
-				x:Name= "TimerBtn"
-				Source="Play.png"
-        Clicked="OnCounterClicked"
-				MaximumHeightRequest="200"
-				MaximumWidthRequest="200"
-				HorizontalOptions="Center" />
-
-			<Button
-				x:Name="LoadBtn" 
-				Text="Read file"
-				Clicked="OnLoadClicked"
-				MaximumHeightRequest="200"
-				MaximumWidthRequest="200"
-				HorizontalOptions="Center"/>
-
-			<Label
-							  x:Name="LatestEntry"
-                Text=""
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="What is this shit?"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-			<Label
-							  x:Name="DebugEntry"
-                Text=""
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="What is this shit?"
-                FontSize="18"
-                HorizontalOptions="Center" />
-		</VerticalStackLayout>
+								Grid.Row="4"
+								x:Name= "TimerBtn"
+								Source="Play.png"
+								Clicked="OnCounterClicked"
+								MaximumHeightRequest="200"
+								MaximumWidthRequest="200"
+								HorizontalOptions="Center" />
+		</Grid>
 	</ScrollView>
 	
 </ContentPage>

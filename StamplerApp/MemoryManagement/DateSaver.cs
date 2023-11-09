@@ -10,8 +10,9 @@ namespace MemoryManagement
 
 		public DateSaver()
 		{
-			m_filename = "StamplerAppData2.txt";
-			string localFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+			m_filename = "StamplerAppData3.txt";
+			// string localFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+			string localFolderPath = "C:/Users/seb/OneDrive - Sigma Technology/Dokument";
 			m_filePath = Path.Combine(localFolderPath, m_filename);
 		}
 
@@ -27,7 +28,8 @@ namespace MemoryManagement
 					string line;
 					while ((line = reader.ReadLine()) != null)
 					{
-						var dateEntry = new DateEntry(line);
+						var test = line.Split(" ");
+						var dateEntry = new DateEntry(test[0], test[1]);
 						dates.Add(dateEntry);
 					}
 				}
@@ -59,15 +61,15 @@ namespace MemoryManagement
 
 		public void AppendOnFile(DateEntry date)
 		{
-			try
-			{
-				File.AppendAllText(m_filePath, date.AsBundledString() + "\n");
-			}
-			catch (Exception e )
-			{
-				Debug.Assert(false, e.Message);
-				throw;
-			}
+			//try
+			//{
+			//	File.AppendAllText(m_filePath, date.AsBundledString() + "\n");
+			//}
+			//catch (Exception e )
+			//{
+			//	Debug.Assert(false, e.Message);
+			//	throw;
+			//}
 		}
 	}
 }

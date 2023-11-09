@@ -1,5 +1,4 @@
 ﻿
-using System.Diagnostics;
 using MemoryManagement;
 
 namespace StamplerApp
@@ -24,9 +23,10 @@ namespace StamplerApp
 		{
 			base.OnAppearing();
 
-			DateEntry test = new DateEntry("2023-11-07;08:00.00;16:30.00;6 0;Notes here;normal.png");
-			m_saver.AppendOnFile(test);
-			listView.ItemsSource = m_saver.ReadFromFile();
+			m_entries = m_saver.ReadFromFile();
+			m_entries.Reverse();
+
+			listView.ItemsSource = m_entries;
 		}
 		private void OnCounterClicked(object sender, EventArgs e)
 		{
@@ -53,17 +53,11 @@ namespace StamplerApp
 
 				var time = DateTime.Now - m_start;
 
-				DateEntry entry = new DateEntry();
-				string timeForm = "HH:mm.ss";
-				entry.ShiftStart = m_start.ToString(timeForm);
-				entry.ShiftEnd = m_end.ToString(timeForm);
-				entry.TimeWorked = $"{time.Hours} {time.Minutes}";
-				entry.Date = m_start.Date.ToString("d");
-				entry.PersonalNotes = "Notes here";
-				entry.ImageUrl = "normal.png";
+				DateEntry entry = new DateEntry(m_start, m_end);
 
 				ElapsedTime.Text = $"Worked hours: {time.Hours}::{time.Minutes}::{time.Seconds}";
 				string date = m_start.Date + " H:" + time.Hours.ToString() + " Min:" + time.Minutes.ToString();
+				
 				m_entries.Add(entry);
 			}
 		}
